@@ -38,7 +38,7 @@ build test
 ```c++
 struct Source : Stream {
   Buffer buf { "paper", "clips", "for", "sale" };
-	size_t i = 0;
+  size_t i = 0;
 
   bool resume () override {
     if(!this->hasSink || this->ended) {
@@ -50,7 +50,7 @@ struct Source : Stream {
       this->sink->write(s);
     }
 
-    if (this->i == this->buf.size()) {
+    if (i == buf.size()) {
       this->sink->end();
     }
 
@@ -63,7 +63,7 @@ struct Source : Stream {
 };
 ```
 
-### SYNC EXAMPLE
+### SINK EXAMPLE
 
 ```c++
 struct Sink : Stream {
