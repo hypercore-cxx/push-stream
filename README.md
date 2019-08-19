@@ -1,11 +1,12 @@
 # SYNOPSIS
 
-Push-Streams is a streams implementation based on this streams [spec][1]. There
+`push-stream` is a streams implementation based on this streams [spec][1]. There
 is a minimal base-class that implements pipe and adds placeholders for typical
 properties and methods that will be used in implementing the usual `Source`,
 `Sync`, `Through` and `Duplex` streams.
 
-Pipe overloads the `|` operator to improve readability, ie you can do this...
+The base class overloads the `|` operator to improve readability, ie you can do 
+this...
 
 ```c++
 int main () {
@@ -20,7 +21,7 @@ This module is designed to work with the [`datcxx`][0] build tool. To add this
 module to your project us the following command...
 
 ```bash
-build add datcxx/sodium
+build add datcxx/push-stream
 ```
 
 

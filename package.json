@@ -3,7 +3,7 @@
   "description": "A push streams implementation",
   "repository": {
     "type": "git",
-    "url": "git@github.com:datcxx/push-streams.git"
+    "url": "git@github.com:datcxx/push-stream.git"
   },
   "devDependencies": {
     "git@github.com:heapwolf/cxx-tap": "d373e4be"
