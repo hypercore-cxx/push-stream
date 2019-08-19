@@ -1,0 +1,25 @@
+{
+  "name": "push-streams",
+  "description": "A push streams implementation",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:datcxx/push-streams.git"
+  },
+  "devDependencies": {
+    "git@github.com:heapwolf/cxx-tap": "d373e4be"
+  },
+  "license": "MIT",
+  "scripts": {
+    "test": [
+      "clang++ -std=c++2a -stdlib=libc++",
+      "test/index.cxx -o test/index && ./test/index"
+    ]
+  },
+  "flags": [
+    "-std=c++2a",
+    "-stdlib=libc++"
+  ],
+  "files": [
+    "index.hxx"
+  ]
+}
