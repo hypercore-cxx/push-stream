@@ -1,3 +1,6 @@
+#ifndef PUSH_STREAM_H
+#define PUSH_STREAM_H
+
 #include <string>
 #include <iostream>
 #include <vector>
@@ -35,3 +38,5 @@ Stream& operator | (Stream& source, Stream& sink) {
   sink.source->pipe();
   return sink;
 }
+
+#endif

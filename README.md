@@ -10,6 +10,8 @@ this...
 
 ```c++
 int main () {
+  // ...
+
   source | through | sink;
   return 0;
 }

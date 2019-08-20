@@ -14,6 +14,9 @@ using Buffer = std::vector<String>;
 
 using namespace Hyper::Util;
 
+//
+// A source stream implementation
+//
 struct Source : Stream {
   Buffer buf { "paper", "clips", "for", "sale" };
   size_t i = 0;
@@ -40,6 +43,9 @@ struct Source : Stream {
   }
 };
 
+//
+// A sink stream implementation
+//
 struct Sink : Stream {
   Buffer buf;
 
@@ -55,6 +61,9 @@ struct Sink : Stream {
   }
 };
 
+//
+// A through/transform stream implementation
+//
 struct Through : Stream {
   using Callback = std::function<String(String)>;
   Callback callback;
@@ -94,6 +103,9 @@ struct Through : Stream {
   }
 };
 
+//
+// An async source stream implementation
+//
 struct SourceAsync : Stream {
   std::ifstream file;
 
@@ -151,6 +163,9 @@ struct SourceAsync : Stream {
   }
 };
 
+//
+// Tests!
+//
 int main () {
   TAP::Test t;
 
