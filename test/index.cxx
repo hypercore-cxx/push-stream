@@ -1,14 +1,18 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <fstream>
 
 #include "../deps/heapwolf/cxx-tap/index.hxx"
+#include "../deps/datcxx/async/index.hxx"
+#include "../deps/datcxx/result/index.hxx"
 #include "../index.hxx"
 
 using String = std::string;
 using Any = std::any;
 using Buffer = std::vector<String>;
-using Callback = std::function<String(String)>;
+
+using namespace Hyper::Util;
 
 struct Source : Stream {
   Buffer buf { "paper", "clips", "for", "sale" };
@@ -52,6 +56,7 @@ struct Sink : Stream {
 };
 
 struct Through : Stream {
+  using Callback = std::function<String(String)>;
   Callback callback;
 
   Through(Callback cb) : callback(cb) {
@@ -89,6 +94,66 @@ struct Through : Stream {
   }
 };
 
+struct SourceAsync : Stream {
+  std::ifstream file;
+
+  SourceAsync () {
+    file = std::ifstream("test/data.txt");
+
+    if (!file) {
+      // TODO show how to propagate an error...
+      this->ended = true;
+    }
+  }
+
+	size_t i = 0;
+
+  //
+  // Do the IO in another thread.
+  //
+  Async<Result<String>> read () {
+    Result<String> res;
+
+    String line;
+
+    if (!getline(file, line)) {
+      res = Error("EOF");
+      co_return res;
+    }
+
+    res = line;
+
+    co_return res;
+  }
+
+  bool resume () override {
+
+    if(!this->hasSink || this->ended) {
+      return false;
+    }
+
+    while (!this->sink->paused) {
+      auto promise = this->read();
+      auto data = promise.get();
+
+      if (data) {
+        this->sink->write(data.unwrap());
+      } else {
+        break;
+      }
+    }
+
+    file.close();
+    this->sink->end();
+
+    return true;
+  }
+
+  void pipe () override {
+    this->resume();
+  }
+};
+
 int main () {
   TAP::Test t;
 
@@ -109,7 +174,7 @@ int main () {
     Source source;
     Sink sink;
 
-    Through through([](String str) -> String {
+    Through through([](auto str) {
       for (size_t i = 0; i < str.size(); i++) {
         str[i] = toupper(str[i]);
       }
@@ -130,6 +195,19 @@ int main () {
       t->equal(sink.buf[i], buf[i], "buffers match");
     }
 
+    t->end();
+  });
+
+  t.test("async pipe", [&](auto t) {
+    SourceAsync source;
+    Sink sink;
+
+    t->equal(sink.ended, false, "sink has not yet ended");
+
+    source | sink;
+
+    t->equal(sink.buf.size(), 7, "sink buffer equal in size");
+    t->equal(sink.ended, true, "sink has ended");
     t->end();
   });
 }

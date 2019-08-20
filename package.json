@@ -6,7 +6,9 @@
     "url": "git@github.com:datcxx/push-stream.git"
   },
   "devDependencies": {
-    "git@github.com:heapwolf/cxx-tap": "d373e4be"
+    "git@github.com:heapwolf/cxx-tap": "d373e4be",
+    "git@github.com:datcxx/async": "092b5da3",
+    "git@github.com:datcxx/result": "ec7b0529"
   },
   "license": "MIT",
   "scripts": {
