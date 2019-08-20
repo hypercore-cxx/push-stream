@@ -109,19 +109,16 @@ struct SourceAsync : Stream {
 	size_t i = 0;
 
   //
-  // Do the IO in another thread.
+  // Handle the IO in a co-routine.
   //
   Async<Result<String>> read () {
     Result<String> res;
 
     String line;
 
-    if (!getline(file, line)) {
-      res = Error("EOF");
-      co_return res;
-    }
-
-    res = line;
+    res = getline(file, line)
+      ? line
+      : Error("EOF");
 
     co_return res;
   }
