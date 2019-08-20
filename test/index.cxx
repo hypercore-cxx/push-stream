@@ -16,7 +16,7 @@ using namespace Hyper::Util;
 
 struct Source : Stream {
   Buffer buf { "paper", "clips", "for", "sale" };
-	size_t i = 0;
+  size_t i = 0;
 
   bool resume () override {
     if(!this->hasSink || this->ended) {
@@ -106,7 +106,7 @@ struct SourceAsync : Stream {
     }
   }
 
-	size_t i = 0;
+  size_t i = 0;
 
   //
   // Handle the IO in a co-routine.
